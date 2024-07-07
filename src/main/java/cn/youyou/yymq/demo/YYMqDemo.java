@@ -1,9 +1,9 @@
 package cn.youyou.yymq.demo;
 
-import cn.youyou.yymq.core.YYBroker;
-import cn.youyou.yymq.core.YYConsumer;
-import cn.youyou.yymq.core.YYMessage;
-import cn.youyou.yymq.core.YYProducer;
+import cn.youyou.yymq.client.YYBroker;
+import cn.youyou.yymq.client.YYConsumer;
+import cn.youyou.yymq.common.Message;
+import cn.youyou.yymq.client.YYProducer;
 import lombok.SneakyThrows;
 
 public class YYMqDemo {
@@ -26,11 +26,11 @@ public class YYMqDemo {
 
         for (int i = 0; i < 10; i++) {
             Order order = new Order(ids, "item" + ids, 100 * ids);
-            producer.send(topic, new YYMessage<>((long) ids ++, order, null));
+            producer.send(topic, new Message<>((long) ids ++, order, null));
         }
 
         for (int i = 0; i < 10; i++) {
-            YYMessage<Order> message = (YYMessage<Order>) consumer.poll(1000);
+            Message<Order> message = (Message<Order>) consumer.poll(1000);
             System.out.println(message);
         }
 
@@ -41,17 +41,17 @@ public class YYMqDemo {
             }
             if (c == 'p') {
                 Order order = new Order(ids, "item" + ids, 100 * ids);
-                producer.send(topic, new YYMessage<>(ids ++, order, null));
+                producer.send(topic, new Message<>(ids ++, order, null));
                 System.out.println("send ok => " + order);
             }
             if (c == 'c') {
-                YYMessage<Order> message = (YYMessage<Order>) consumer.poll(1000);
+                Message<Order> message = (Message<Order>) consumer.poll(1000);
                 System.out.println("poll ok => " + message);
             }
             if (c == 'a') {
                 for (int i = 0; i < 10; i++) {
                     Order order = new Order(ids, "item" + ids, 100 * ids);
-                    producer.send(topic, new YYMessage<>((long) ids ++, order, null));
+                    producer.send(topic, new Message<>((long) ids ++, order, null));
                 }
                 System.out.println("send 10 orders...");
             }

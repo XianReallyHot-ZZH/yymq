@@ -1,4 +1,6 @@
-package cn.youyou.yymq.core;
+package cn.youyou.yymq.client;
+
+import cn.youyou.yymq.core.YYMq;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

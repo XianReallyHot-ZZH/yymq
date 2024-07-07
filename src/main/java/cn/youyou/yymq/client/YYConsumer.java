@@ -1,4 +1,7 @@
-package cn.youyou.yymq.core;
+package cn.youyou.yymq.client;
+
+import cn.youyou.yymq.common.Message;
+import cn.youyou.yymq.core.YYMq;
 
 /**
  * 消费者，指定消费哪个topic
@@ -19,7 +22,7 @@ public class YYConsumer {
         if(mq == null) throw new RuntimeException("topic not found");
     }
 
-    public YYMessage poll(long timeout) {
+    public Message poll(long timeout) {
         YYMq mq = broker.find(topic);
         if(mq == null) throw new RuntimeException("topic not found");
         return mq.poll(timeout);
