@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -28,7 +29,7 @@ public class Message<T> {
     // 消息体
     private T body;
     // 系统类属性信息，框架自身的机制依赖的一些信息，比如offset，mq的版本信息啥的
-    private Map<String, Object> headers;
+    private Map<String, String> headers = new HashMap<>();
     // 业务属性信息
 //    private Map<String, Object> properties;
 
@@ -39,7 +40,7 @@ public class Message<T> {
      * @param headers
      * @return
      */
-    public static Message<String> create(String body, Map<String, Object> headers) {
+    public static Message<String> create(String body, Map<String, String> headers) {
         return new Message<>(idGen.incrementAndGet(), body, headers);
     }
 

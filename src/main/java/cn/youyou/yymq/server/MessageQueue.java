@@ -1,6 +1,7 @@
 package cn.youyou.yymq.server;
 
 import cn.youyou.yymq.common.Message;
+import cn.youyou.yymq.common.Stat;
 import cn.youyou.yymq.model.Subscription;
 import cn.youyou.yymq.store.Indexer;
 import cn.youyou.yymq.store.Store;
@@ -111,7 +112,7 @@ public class MessageQueue {
         }
         // 当前文件的写入位点，将作为消息的位点
         int position = messageQueue.store.position();
-        message.getHeaders().put(Message.HEADER_KEY_OFFSET, position);
+        message.getHeaders().put(Message.HEADER_KEY_OFFSET, String.valueOf(position));
         // 完成消息写入
         messageQueue.store.write(message);
         return position;
@@ -201,6 +202,25 @@ public class MessageQueue {
         }
         log.info(">>> [MessageQueue] poll topic:{}, consumerId:{}, size:{}, last message:{}", topic, consumerId, size, message);
         return result;
+    }
+
+    /**
+     * 订阅了指定topic的消费者当前队列的数据情况
+     *
+     * @param topic
+     * @param consumerId
+     * @return
+     */
+    public static Stat stat(String topic, String consumerId) {
+        log.info(">>> [MessageQueue] stat topic:{} consumerId:{}", topic, consumerId);
+        MessageQueue messageQueue = queues.get(topic);
+        if (messageQueue == null) {
+            throw new RuntimeException("topic not found");
+        }
+        if (!messageQueue.subscriptions.containsKey(consumerId)) {
+            throw new RuntimeException("subscriptions not found for consumerId:" + consumerId + " and topic:" + topic);
+        }
+        return new Stat(messageQueue.subscriptions.get(consumerId), messageQueue.store.total(), messageQueue.store.position());
     }
 
 

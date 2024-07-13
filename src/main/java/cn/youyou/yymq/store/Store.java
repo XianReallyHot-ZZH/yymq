@@ -74,6 +74,7 @@ public class Store {
      */
     private void recovery() {
         ByteBuffer readOnlyBuffer = mappedByteBuffer.asReadOnlyBuffer();
+        // header读出来的是数字的ascii码（比如消息长度是0000000090，对应的header为[48,48,48,48,48,48,48,48,57,48]）
         byte[] header = new byte[MessageProtocol.MSG_LEN_META_LEN];
         readOnlyBuffer.get(header);
         int pos = 0;
@@ -126,6 +127,9 @@ public class Store {
     public Message<String> read(int position) {
         ByteBuffer readOnlyBuffer = mappedByteBuffer.asReadOnlyBuffer();
         Indexer.Entry entry = Indexer.getEntry(topic, position);
+        if (entry == null) {
+            return Message.create(null, null);
+        }
         readOnlyBuffer.position(entry.getPosition());
         byte[] bytes = new byte[entry.getLength()];
         readOnlyBuffer.get(bytes, 0, entry.getLength());
@@ -173,7 +177,7 @@ public class Store {
         public static Message<String> decode(String msg) {
             log.info(">>> [Store] read msg: {}", msg);
             if (msg == null || msg.length() < 1) {
-                return null;
+                return Message.create(null, null);
             }
             String json = msg.substring(MSG_LEN_META_LEN);
             return JSON.parseObject(json, new TypeReference<Message<String>>() {});

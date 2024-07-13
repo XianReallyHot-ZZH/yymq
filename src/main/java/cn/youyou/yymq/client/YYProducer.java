@@ -1,7 +1,6 @@
 package cn.youyou.yymq.client;
 
 import cn.youyou.yymq.common.Message;
-import cn.youyou.yymq.core.YYMq;
 
 /**
  * 生产者
@@ -22,11 +21,7 @@ public class YYProducer {
      * @return
      */
     public boolean send(String topic, Message message) {
-        YYMq mq = broker.find(topic);
-        if (mq == null) {
-            throw new RuntimeException("topic not found");
-        }
-        return mq.send(message);
+        return broker.send(topic, message);
     }
 
 }

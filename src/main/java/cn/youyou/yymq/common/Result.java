@@ -36,4 +36,7 @@ public class Result<T> {
     }
 
 
+    public static Result<Stat> stat(Stat stat) {
+        return new Result<>(1, stat);
+    }
 }

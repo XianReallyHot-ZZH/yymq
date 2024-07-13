@@ -1,3 +1,6 @@
 spring:
   application:
     name: yymq
+
+server:
+  port: 8765

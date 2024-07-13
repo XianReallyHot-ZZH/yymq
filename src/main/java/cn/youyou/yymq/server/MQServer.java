@@ -2,6 +2,7 @@ package cn.youyou.yymq.server;
 
 import cn.youyou.yymq.common.Message;
 import cn.youyou.yymq.common.Result;
+import cn.youyou.yymq.common.Stat;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -108,6 +109,12 @@ public class MQServer {
                               @RequestParam("cid") String consumerId,
                               @RequestParam("offset") Integer offset) {
         return Result.ok("" + MessageQueue.ack(topic, consumerId, offset));
+    }
+
+    @RequestMapping("/stat")
+    public Result<Stat> stat(@RequestParam("t") String topic,
+                             @RequestParam("cid") String consumerId) {
+        return Result.stat(MessageQueue.stat(topic, consumerId));
     }
 
 }
