@@ -17,6 +17,16 @@ import java.util.List;
 public class MQServer {
 
     /**
+     * 创建topic对应的server接口
+     *
+     * @param topic
+     * @return
+     */
+    public Result<String> createTopic(@RequestParam("t") String topic) {
+        return Result.ok(MessageQueue.createTopic(topic));
+    }
+
+    /**
      * consumer进行topic订阅对应的server接口
      *
      * @param topic

@@ -15,7 +15,7 @@ public class Subscription {
     private String topic;
     // 消费者id
     private String consumerId;
-    // 消费者消费的offset
+    // 消费者消费的offset,消费确认的位点维护在这里
     private int offset = -1;
 
 }

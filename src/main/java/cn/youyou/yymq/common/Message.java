@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @NoArgsConstructor
 public class Message<T> {
 
-    // 消息偏移量key, 偏移量代表了消息在队列中的"位置"
+    // 消息偏移量key, 偏移量代表了消息在队列中的"位置", 在ack消息的时候其实是通过在subscription中维护相应的offset实现的
     public static final String HEADER_KEY_OFFSET = "X-offset";
 
     // 一款简单的id生成器
